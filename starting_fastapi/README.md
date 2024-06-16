@@ -12,3 +12,28 @@ validation. It's perfect for creating robust APIs.
 - It's used to validate the data that we receive from the client.
 - It's used to convert the data into Python objects that we can easily work with.
 - It's used to generate documentation for our API.
+
+### Pydantic Field Types 
+`Which we have used in Class`
+- `str`: String
+- `int`: Integer
+- `float`: Floating Point Number
+- `bool`: Boolean
+- `list`: List of items
+- `dict`: Dictionary
+- `datetime`: Date and Time
+- `Optional`: Makes a field optional
+- `Union`: Allows a field to be one of multiple types
+- `List[Item]`: A list of items of type Item
+- `Dict[str, Item]`: A dictionary with string keys and values of type Item
+- `Literal["value1", "value2", ...]`: A string that must be one
+of the specified values
+- `HttpUrl`: A URL
+- `EmailStr`: An email address
+- `IPvAnyAddress`: An IP address
+- `IPv4Address`: An IPv4 address
+- `IPv6Address`: An IPv6 address
+
+
+For More check this [link.](https://docs.pydantic.dev/1.10/usage/types/)
+
