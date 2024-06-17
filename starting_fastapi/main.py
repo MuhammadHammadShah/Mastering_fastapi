@@ -72,8 +72,8 @@ def create_posts(new_post : Post): # we can make this post request to get reques
 # Get a single post with id
 
 @app.get("/posts/{id}") # when ever we get a value from path it becomes string
-def get_a_single_post(id):
-    specific_post_id = find_posts_id(int(id)) # So we will turn it into integer 
+def get_a_single_post(id : int) :
+    specific_post_id = find_posts_id(id) # So we will turn it into integer  ..... but instead of making it integer here we will assign a type to id so client will never put a value which not a number like id = asdasa
     #print(id)
     print(specific_post_id)
     return{
