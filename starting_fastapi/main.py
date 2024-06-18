@@ -30,6 +30,12 @@ def find_posts_id(id):
     for p in my_db_my_posts:
         if p["id"] == id:
             return p
+        
+def find_index_post(id): # enumerate get index and id both so here it will assign index to i and id to p 
+    for i , p in enumerate(my_db_my_posts):
+        if p["id"] == id:
+            return i
+
 
 
 @app.get("/")
@@ -84,7 +90,7 @@ def get_a_single_post(id : int , response : Response) :
           "details" :  specific_post_id
     }
 
-# TO get latest post
+# TO get latest post but in this we get error
 
 #@app.get("/posts/latest")
 #def get_latest_post():
@@ -92,3 +98,11 @@ def get_a_single_post(id : int , response : Response) :
 #    return {"detail" : post}
 
 
+# To delete a post
+@app.delete("/posts/{id}" , status_code=status.HTTP_204_NO_CONTENT)
+def delete(id : int):
+    index = find_index_post(id)
+    if index == None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"post with id: {id} not found")
+    my_db_my_posts.pop(index)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
