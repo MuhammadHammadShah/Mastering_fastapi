@@ -1,5 +1,5 @@
 from typing import Optional
-from fastapi import FastAPI
+from fastapi import FastAPI, Response , status , HTTPException
 from fastapi.params import Body
 from pydantic import BaseModel
 from random import randrange
@@ -56,7 +56,7 @@ def first_creates_post(payload:dict = Body(...)): #Body is an object from fastap
 # aur ab yahan payload m b 2 values a rahi hn jn ko recieve krne ka tareeka ye h pehle f-string m payload ko liye phir payload kki values le li. {payload[title]} or {payload[content]}
     }          
 
-@app.post("/createposts")                     
+@app.post("/createposts" , status_code=status.HTTP_201_CREATED)                     
 def create_posts(new_post : Post): # we can make this post request to get requests by send the param new_post in return 
     print(new_post)# to add some data our db my_db_my_posts but we have to give random numbers to id's for our db so we will also use randomrange packages
     new_post_dict = new_post.dict()
@@ -71,12 +71,24 @@ def create_posts(new_post : Post): # we can make this post request to get reques
 
 # Get a single post with id
 
-@app.get("/posts/{id}") # when ever we get a value from path it becomes string
-def get_a_single_post(id : int) :
+@app.get("/posts/{id}" ) # when ever we get a value from path it becomes string
+def get_a_single_post(id : int , response : Response) :
     specific_post_id = find_posts_id(id) # So we will turn it into integer  ..... but instead of making it integer here we will assign a type to id so client will never put a value which not a number like id = asdasa
-    #print(id)
+    if not specific_post_id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"post with id: {id} not found")
+        #response.status_code = status.HTTP_404_NOT_FOUND
+        #return{"message" : f"post with id: {id} not found"}
     print(specific_post_id)
     return{
         #"details" : f"Here is posts_id >>>> {id} <<<< you are interested in "
           "details" :  specific_post_id
     }
+
+# TO get latest post
+
+#@app.get("/posts/latest")
+#def get_latest_post():
+#    post = my_db_my_posts[len(my_db_my_posts)-1]
+#    return {"detail" : post}
+
+
