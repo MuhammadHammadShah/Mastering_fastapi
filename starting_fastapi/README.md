@@ -136,3 +136,11 @@ But remember other relational databases are 90% same to **POSTGRESQL**.
 - By default, when adding a new entry to database, any coloumn can be left blank. When a coloumn is left blank, it has a **NULL** value.
 
 - If you need coloumn to properly filled in to create a new record, a **NOT NULL** constraint can be added to the coloumn to ensure that the coloumn is never left blank. 
+
+
+
+
+
+### Psycopg - PostgreSQL database  adopter for python:
+- When comes to postgres to use it in a python project we need a postgres driver.
+- We will be using `Psycopg`
