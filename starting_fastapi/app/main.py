@@ -1,19 +1,29 @@
 from typing import Optional
-from fastapi import FastAPI, Response , status , HTTPException
+from fastapi import FastAPI, Response , status , HTTPException , Depends
 from fastapi.params import Body
 from pydantic import BaseModel
 from random import randrange
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
+from sqlalchemy.orm import Session
+from . import  models
+from .database import  engine , get_db
+
+
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+
+
 
 class Post(BaseModel):
     title: str
     content : str
     published : bool = True # True is set as default
-    rating : Optional[int] = None
+
 
 while True:
     try:
@@ -60,12 +70,22 @@ async def root():
     }
 
 
+@app.get("/sqlalchemy")
+def test_posts(db: Session = Depends(get_db)):
+
+    posts = db.query(models.Post).all()
+
+    return {
+        "data" : posts
+    }
+
+
+
 @app.get("/posts")
-def get_posts_by_get_param():
-    cursor.execute("""SELECT * FROM posts""")
-    post = cursor.fetchall()
+def get_posts_by_get_param(db: Session = Depends(get_db)):
+    posts = db.query(models.Post).all()
     return{
-        "data" : post
+        "data" : posts
     }
     
     
@@ -79,25 +99,30 @@ def first_creates_post(payload:dict = Body(...)): #Body is an object from fastap
     }          
 
 @app.post("/createposts" , status_code=status.HTTP_201_CREATED)                     
-def create_posts(new_post : Post):
-    print(new_post)
-    cursor.execute("""INSERT INTO posts (title , content , published) VALUES (%s , %s , %s) RETURNING * """ , (new_post.title , new_post.content , new_post.published))
-    a_post = cursor.fetchone()
-    conn.commit()
+def create_posts(new_post : Post , db: Session = Depends(get_db)):
+    #a_post = models.Post(title = new_post.title , content = new_post.content , published = new_post.published ) # This way was ineffecient because if we get a fifty fields in our model so we have to write fifty fields here so we will use the unpacking dicttionary method here
+    a_post = models.Post(**new_post.dict()) # Here we are using the unpacking dictionary , >>> It wil automatically unpack all the field whatever no problem how many are they in models.
+    db.add(a_post)
+    db.commit()
+    db.refresh(a_post)
+
     return{
         "data" : a_post
     }
-    
+
+
 
 # Get a single post with id
 
 @app.get("/posts/{id}" ) 
-def get_a_single_post(id : int , response : Response) :
-    cursor.execute("""SELECT * FROM posts WHERE id = %s""" , (str(id),))
-    specific_post_id = cursor.fetchone()
+def get_a_single_post(id : int , response : Response , db: Session = Depends(get_db)) :
+#    cursor.execute("""SELECT * FROM posts WHERE id = %s""" , (str(id),))
+#    specific_post_id = cursor.fetchone()
+    specific_post_id = db.query(models.Post).filter(models.Post.id == id).first()
+    #print(specific_post_id)
     if not specific_post_id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"post with id: {id} not found")
-    print(specific_post_id)
+    #print(specific_post_id)
     return{
           "details" :  specific_post_id
     }
@@ -112,20 +137,27 @@ def get_a_single_post(id : int , response : Response) :
 
 # To delete a post
 @app.delete("/posts/{id}" , status_code=status.HTTP_204_NO_CONTENT)
-def delete(id : int):
-    cursor.execute("""DELETE FROM posts WHERE id = %s RETURNING * """ , (str(id),))
-    deleted_post = cursor.fetchone()
-    conn.commit()
-    if deleted_post == None:
+def delete(id : int , db: Session = Depends(get_db)):
+    
+    deleted_post = db.query(models.Post).filter(models.Post.id == id)
+    
+    if deleted_post.first() == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"post with id: {id} not found")
+    deleted_post.delete(synchronize_session=False)
+    db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+
 
 # To update a method with PUT
 @app.put("/posts/{id}")
-def update_post_put(id:int , post : Post):
-    cursor.execute("""UPDATE posts SET title = %s , content = %s , published = %s WHERE id = %s RETURNING *""" , (post.title , post.content , post.published , (str(id))))
-    updated_post = cursor.fetchone()
-    conn.commit()
+def update_post_put(id:int , post : Post , db: Session = Depends(get_db)):
+    post_query = db.query(models.Post).filter(models.Post.id == id)
+    updated_post = post_query.first()
     if updated_post == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"post with id: {id} not found")
-    return {"data" : updated_post}
+    #post_query.update({'title' : "updated from vs code" , 'content' : "content of updated from vs code"} , synchronize_session=False)
+    post_query.update(post.dict() , synchronize_session=False)
+    db.commit()
+    return {"data" : post_query.first()}

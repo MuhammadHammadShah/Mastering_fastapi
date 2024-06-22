@@ -144,3 +144,32 @@ But remember other relational databases are 90% same to **POSTGRESQL**.
 ### Psycopg - PostgreSQL database  adopter for python:
 - When comes to postgres to use it in a python project we need a postgres driver.
 - We will be using `Psycopg`
+
+## `ORM (Object Relational Mapper)`
+
+- Layer of Abstraction that sits between the database and us.
+- We can perform all database operations through python code. **No More SQL.**
+
+![ORM](https://qph.cf2.quoracdn.net/main-qimg-13b582c595a67086b86d7691f88d80bd)
+
+
+#### What ORM's can do
+- Instead of manually defining tables in postgres, We can define our tables as python models.
+- Queries can be made excusively through python code. **No SQL is neccessary.**
+
+## `SQLALCHEMY`
+- `SQLALCHEMY` is one the most popular python ORM.
+- It is a standalone library and has no association with FastAPI. It can be used with anyother python web framework or any python based application.
+- `pip install sqlalchemy`
+
+
+## `SCHEMA MODELS`
+- Schema / Pydantic defines the structure of a request and response.
+- This ensures when a user wants to create a post, the request will only go through if it has a **`title`** and **`content`** in the body. 
+
+## `SQLALCHEMY MODELS`
+- SQLALCHEMY models define the structure of a table in the database.
+- This ensures when a user wants to create a post, the post will only be created if it
+has a **`title`** and **`content`** in the database.
+- Responsible for defining the coloumns of our `"posts"` tables within the postgres.
+- sqlalchemy is used to query , create , delete and update entries within the database.

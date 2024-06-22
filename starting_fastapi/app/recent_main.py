@@ -61,3 +61,71 @@
 #    post_dict['id'] = id
 #    my_db_my_posts[index] = post_dict
 #    return {"data" : post_dict}
+
+
+## this is the method to create  sqlalchemy database url
+
+#SQL_DATABASE_URL = 'postgresql://<username>:<password>@<ip-address/hostname>/<database_name>'
+
+
+#    >>>>>>>>>>>>>>>>   Recent code to connect with postgres using psycopg   <<<<<<<<<<<<<<<<<<<
+
+## To fetch all data through GET method 
+
+#@app.get("/posts")
+#def get_posts_by_get_param():
+#    cursor.execute("""SELECT * FROM posts""")
+#    post = cursor.fetchall()
+#    return{
+#        "data" : post
+#    }
+
+
+## To Produce new data through POST method
+
+#@app.post("/createposts" , status_code=status.HTTP_201_CREATED)                     
+#def create_posts(new_post : Post):
+#    print(new_post)
+#    cursor.execute("""INSERT INTO posts (title , content , published) VALUES (%s , %s , %s) RETURNING * """ , (new_post.title , new_post.content , new_post.published))
+#    a_post = cursor.fetchone()
+#    conn.commit()
+#    return{
+#        "data" : a_post
+#    }
+  
+
+# Get a single post with id
+
+#@app.get("/posts/{id}" ) 
+#def get_a_single_post(id : int , response : Response) :
+#    cursor.execute("""SELECT * FROM posts WHERE id = %s""" , (str(id),))
+#    specific_post_id = cursor.fetchone()
+#    if not specific_post_id:
+#        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"post with id: {id} not found")
+#    print(specific_post_id)
+#    return{
+#          "details" :  specific_post_id
+#    }
+
+
+# To delete a post
+
+#@app.delete("/posts/{id}" , status_code=status.HTTP_204_NO_CONTENT)
+#def delete(id : int):
+#    cursor.execute("""DELETE FROM posts WHERE id = %s RETURNING * """ , (str(id),))
+#    deleted_post = cursor.fetchone()
+#    conn.commit()
+#    if deleted_post == None:
+#        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"post with id: {id} not found")
+#    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+# To update a method with PUT
+#@app.put("/posts/{id}")
+#def update_post_put(id:int , post : Post):
+#    cursor.execute("""UPDATE posts SET title = %s , content = %s , published = %s WHERE id = %s RETURNING *""" , (post.title , post.content , post.published , (str(id))))
+#    updated_post = cursor.fetchone()
+#    conn.commit()
+#    if updated_post == None:
+#        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"post with id: {id} not found")
+#    return {"data" : updated_post}
