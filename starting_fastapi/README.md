@@ -192,3 +192,11 @@ but it's very hard to generate a password from a hash.
 - functions that are not specific to any particular file or class
 - functions that are used to perform some common tasks
 - functions that are used to perform some utility tasks
+
+###### Prefix
+- Prefix is used to define the route prefix for all routes in the router.
+- For example, if you have a router with a prefix of "/api/v1", all routes
+defined in that router will have "/api/v1" prepended to their path.
+- Prefix is used to group related routes together.
+- Prefix is used to version APIs.
+- - Prefix is used here in post.py and user.py so we can't write /post/ but instead we write it like / . check the code with previous commits.

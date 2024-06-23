@@ -86,6 +86,33 @@
 #    return {"data" : post_dict}
 
 
+# this is a self made database for simple use
+
+#my_db_my_posts = [{
+#    "title" : "title of post 1",
+#    "content" : "content of post 1",
+#    "id" : 1
+#},
+#{
+#    "title" : "favourite foods",
+#    "content" : "I like pizza",
+#    "id" : 2
+#}] 
+
+#function to match the id's in our own db my_db_my_posts
+# def find_posts_id(id):
+#     for p in my_db_my_posts:
+#         if p["id"] == id:
+#             return p
+
+# to find the index of specific id in  my_db_my_posts
+
+#def find_index_post(id): # enumerate get index and id both so here it will assign index to i and id to p 
+#    for i , p in enumerate(my_db_my_posts):
+#        if p["id"] == id:
+#            return i
+
+
 ## this is the method to create  sqlalchemy database url
 
 #SQL_DATABASE_URL = 'postgresql://<username>:<password>@<ip-address/hostname>/<database_name>'
