@@ -200,3 +200,77 @@ defined in that router will have "/api/v1" prepended to their path.
 - Prefix is used to group related routes together.
 - Prefix is used to version APIs.
 - - Prefix is used here in post.py and user.py so we can't write /post/ but instead we write it like / . check the code with previous commits.
+
+###### Tags
+- Tags are used to group related routes together.
+- Tags are used to categorize routes.
+- Tags are used to generate documentation for APIs.
+- Tags are used to generate OpenAPI documentation for APIs.
+- Tags are used here in post.py and user.py so we can't write /post/ but
+instead we write it like / . check the code with previous commits.
+
+
+## JWT token Authentication
+
+![jwt](https://documentation.softwareag.com/webmethods/compendiums/v10-5/C_API_Management/api-mgmt-comp/images/workflow_jwt.png)
+
+JWT (JSON Web Token) is a popular stateless authentication method for APIs and web applications. It works by creating a token containing encoded user information that is sent between the client and server. This token allows the server to verify the user's identity without needing to store session data on the server itself. JWT offers advantages like scalability and flexibility, making it suitable for microservices architectures and cross-origin requests. However, it requires careful implementation to ensure security, as stolen tokens can grant access to user accounts.
+Here's how JWT token authentication works:
+1. **User registration**: The user registers with the application, providing credentials like username and password.
+2. **Login**: The user logs in with their credentials, and the server verifies them.
+3. **Token generation**: If the credentials are valid, the server generates a JWT token containing the
+user's ID, username, and other relevant information. This token is signed with a secret key to
+prevent tampering.
+4. **Token transmission**: The server sends the JWT token to the client, usually in the HTTP
+response header or as a cookie.
+5. **Token verification**: On subsequent requests, the client sends the JWT token back to the
+server. The server verifies the token by checking its signature and ensuring it hasn't expired.
+6. **Access granted**: If the token is valid, the server grants access to the requested resources
+or performs the requested actions.
+7. **Token refresh**: When the token expires, the client can request a new token using the
+refresh token, which is usually sent along with the initial token.
+Here are some benefits of using JWT token authentication:
+* **Stateless**: JWT tokens don't require server-side session storage, making them scalable and
+efficient.
+* **Flexible**: JWT tokens can be used across multiple domains and services, making them suitable
+for microservices architectures.
+* **Secure**: JWT tokens are digitally signed, making them tamper-proof and secure.
+* **Easy to implement**: JWT token authentication is relatively easy to implement, especially
+when compared to other authentication methods like OAuth.
+However, JWT token authentication also has some limitations and potential security risks, such as:
+* **Token theft**: If an attacker steals a JWT token, they can use it to gain unauthorized
+access to the application.
+* **Token expiration**: If tokens are not properly configured to expire, they can remain valid
+indefinitely, allowing attackers to use them.
+* **Key management**: The secret key used to sign JWT tokens must be kept secure and
+managed properly to prevent unauthorized access.
+
+**In Short:**
+- JWT Authentication is stateless.
+- JWT Authentication is scalable.
+- JWT Authentication is secure.
+- JWT Authentication is fast.
+- JWT Authentication is widely used.
+- JWT Authentication is used to authenticate users.
+- JWT Authentication is used to authorize users.
+- JWT token is generated when user logs in.
+- JWT token is sent in the header of every request.
+
+#### Purpose of Signature in JWT
+- The signature in JWT serves several purposes:
+    1. **Authentication**: The signature ensures that the token was issued by the expected party (
+    e.g., the server) and not tampered with during transmission.
+    2. **Integrity**: The signature guarantees that the token's contents have not been altered or
+    tampered with.
+    3. **Non-repudiation**: The signature provides proof that the token was issued
+    by the server, making it difficult for the server to deny having issued the token.
+    4. **Verification**: The signature allows the server to verify the authenticity of the token
+    and ensure it has not been tampered with or altered.
+    5. **Security**: The signature adds an extra layer of security to the token, making
+    it more difficult for attackers to create or modify tokens.
+    6. **Trust**: The signature establishes trust between the client and server, ensuring that
+    the token is genuine and has not been tampered with.
+    7. **Validation**: The signature enables the server to validate the token and ensure it
+    meets the expected format and structure.
+    8. **Protection**: The signature protects the token from unauthorized access, tampering,
+    and manipulation.

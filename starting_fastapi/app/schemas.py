@@ -37,3 +37,9 @@ class UserOut(BaseModel): # Response
 
     class Config:         # this will convert the sqlalchemy model to regular pydantic model.
         from_attributes = True
+
+
+class UserLogin(BaseModel):
+    email : EmailStr
+    password : str
+    

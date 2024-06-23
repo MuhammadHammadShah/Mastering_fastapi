@@ -6,20 +6,23 @@ from ..database import  get_db
 
 # Creating a router instead of @app
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/posts",   
+    tags=["Posts"]
+)
 
 
 
 
 
-@router.get("/posts" , response_model=List[schemas.Post])
+@router.get("/" , response_model=List[schemas.Post])
 def get_posts_by_get_param(db: Session = Depends(get_db)):
     posts = db.query(models.Post).all()
     return posts
     
               
 
-@router.post("/createposts" , status_code=status.HTTP_201_CREATED , response_model=schemas.Post)                     
+@router.post("/" , status_code=status.HTTP_201_CREATED , response_model=schemas.Post)                     
 def create_posts(new_post : schemas.PostCreate , db: Session = Depends(get_db)):
     #a_post = models.Post(title = new_post.title , content = new_post.content , published = new_post.published ) # This way was ineffecient because if we get a fifty fields in our model so we have to write fifty fields here so we will use the unpacking dicttionary method here
     a_post = models.Post(**new_post.dict()) # Here we are using the unpacking dictionary , >>> It wil automatically unpack all the field whatever no problem how many are they in models.
@@ -33,7 +36,7 @@ def create_posts(new_post : schemas.PostCreate , db: Session = Depends(get_db)):
 
 # Get a single post with id
 
-@router.get("/posts/{id}" , response_model=schemas.Post ) 
+@router.get("/{id}" , response_model=schemas.Post ) 
 def get_a_single_post(id : int , response : Response , db: Session = Depends(get_db)) :
 #    cursor.execute("""SELECT * FROM posts WHERE id = %s""" , (str(id),))
 #    specific_post_id = cursor.fetchone()
@@ -48,7 +51,7 @@ def get_a_single_post(id : int , response : Response , db: Session = Depends(get
 
 # To delete a post
 
-@router.delete("/posts/{id}" , status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}" , status_code=status.HTTP_204_NO_CONTENT)
 def delete(id : int , db: Session = Depends(get_db)):
     
     deleted_post = db.query(models.Post).filter(models.Post.id == id)
@@ -62,7 +65,7 @@ def delete(id : int , db: Session = Depends(get_db)):
 
 # To update a method with PUT
 
-@router.put("/posts/{id}" , status_code=status.HTTP_202_ACCEPTED , response_model=schemas.Post)
+@router.put("/{id}" , status_code=status.HTTP_202_ACCEPTED , response_model=schemas.Post)
 def update_post_put(id:int , post : schemas.PostCreate , db: Session = Depends(get_db)):
     post_query = db.query(models.Post).filter(models.Post.id == id)
     updated_post = post_query.first()

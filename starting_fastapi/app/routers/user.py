@@ -5,11 +5,14 @@ from ..database import  get_db
 
 # Creating a router instead of @app
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/users",
+    tags=["Users"]
+)
 
 # To Create user for "user's table"
 
-@router.post("/create_users" , status_code=status.HTTP_201_CREATED , response_model=schemas.UserOut)    
+@router.post("/" , status_code=status.HTTP_201_CREATED , response_model=schemas.UserOut)    
 def create_user(user : schemas.UserCreate , db: Session = Depends(get_db)):
     # hash the password which is retrieving from user.password 
     hashed_password = utils.hash(user.password)  # It hashes the user password before assigning
@@ -22,7 +25,7 @@ def create_user(user : schemas.UserCreate , db: Session = Depends(get_db)):
 
 # To get a specific user 
 
-@router.get("/users/{id}" , response_model=schemas.UserOut)
+@router.get("/{id}" , response_model=schemas.UserOut)
 def get_user(id : int , db : Session = Depends(get_db)):
     a_user = db.query(models.User).filter(models.User.id == id).first()
     if not a_user:
