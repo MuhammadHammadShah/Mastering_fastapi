@@ -121,7 +121,7 @@ def update_post_put(id:int , post : schemas.PostCreate , db: Session = Depends(g
     return post_query.first()
 
 
-# Now creating method for table "users"
+# To Create user for "user's table"
 
 @app.post("/create_users" , status_code=status.HTTP_201_CREATED , response_model=schemas.UserOut)    
 def create_user(user : schemas.UserCreate , db: Session = Depends(get_db)):
@@ -133,3 +133,13 @@ def create_user(user : schemas.UserCreate , db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return new_user
+
+# To get a specific user 
+
+@app.get("/users/{id}" , response_model=schemas.UserOut)
+def get_user(id : int , db : Session = Depends(get_db)):
+    a_user = db.query(models.User).filter(models.User.id == id).first()
+    if not a_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    return a_user
+
