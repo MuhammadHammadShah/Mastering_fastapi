@@ -173,3 +173,22 @@ But remember other relational databases are 90% same to **POSTGRESQL**.
 has a **`title`** and **`content`** in the database.
 - Responsible for defining the coloumns of our `"posts"` tables within the postgres.
 - sqlalchemy is used to query , create , delete and update entries within the database.
+
+
+#### Bcrypt
+- We will be using Bcrypt for hashing passwords
+- `pip install bcrypt`
+- Bcrypt is a password hashing function designed by Niels Provos and David Mazières,
+based on the Blowfish cipher. The hash value produced by bcrypt is designed to be slow and comput
+ionally expensive, making it suitable for hashing passwords.
+- Bcrypt is a one-way function, meaning it's easy to generate a hash from a password
+but it's very hard to generate a password from a hash.
+
+
+##### utils.py file
+- it stores functions 
+- utility functions 
+- functions that are used across multiple files
+- functions that are not specific to any particular file or class
+- functions that are used to perform some common tasks
+- functions that are used to perform some utility tasks

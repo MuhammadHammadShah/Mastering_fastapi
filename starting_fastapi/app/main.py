@@ -1,6 +1,7 @@
 from typing import List, Optional
 from fastapi import FastAPI, Response , status , HTTPException , Depends
 from fastapi.params import Body
+from passlib.context import CryptContext
 from random import randrange
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -10,6 +11,7 @@ from . import  models , schemas
 from .database import  engine , get_db
 
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -54,7 +56,7 @@ def find_index_post(id): # enumerate get index and id both so here it will assig
 @app.get("/")
 async def root():
     return {
-        "message": "Hello to this  World"
+        "message": "Hello to this  World " 
     }
 
 
@@ -118,3 +120,17 @@ def update_post_put(id:int , post : schemas.PostCreate , db: Session = Depends(g
     post_query.update(post.dict() , synchronize_session=False)
     db.commit()
     return post_query.first()
+
+
+# Now creating method for table "users"
+
+@app.post("/create_users" , status_code=status.HTTP_201_CREATED , response_model=schemas.UserOut)    
+def create_user(user : schemas.UserCreate , db: Session = Depends(get_db)):
+    # hash the password which is retrieving from user.password 
+    hashed_password = pwd_context.hash(user.password)  # It hashes the user password before assigning
+    user.password = hashed_password # It assigned the user's hashed_password which was hashed in above line
+    new_user = models.User(**user.dict())
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
