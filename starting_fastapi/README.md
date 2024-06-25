@@ -276,4 +276,7 @@ managed properly to prevent unauthorized access.
     and manipulation.
 
 
+##### FORIEGN KEY
+
+how  any coloumn is conneted to any table.
 
