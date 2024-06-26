@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, Response , status , HTTPException , Depends
 from sqlalchemy.orm import Session
 from .. import  models , schemas , oauth2
@@ -12,6 +12,14 @@ router = APIRouter(
 )
 
 
+# to allow owner how many posts he want to retrieve
+
+@router.get("/" , response_model=List[schemas.Post])
+def get_posts_by_get_param(db: Session = Depends(get_db) , current_user : int = Depends(oauth2.get_current_user) , limit : int = 10 , skip : int = 0 , search : Optional[str] = ""):
+    # print(limit)  # here in limit sqlalchemy retrieve first ten posts.
+    posts = db.query(models.Post).filter(models.Post.title.contains(search)).limit(limit).offset(skip).all() # the .offset() is used as skip option # here .filter(.contains) do a search and retrieve data (posts) according to it
+    return posts
+
 
 
 # get all posts
@@ -23,10 +31,10 @@ router = APIRouter(
 
 # get all posts of the owner_id logged in user.
 
-@router.get("/" , response_model=List[schemas.Post])
-def get_posts_by_get_param(db: Session = Depends(get_db) , current_user : int = Depends(oauth2.get_current_user)):
-    posts = db.query(models.Post).filter(models.Post.owner_id == current_user.id).all()
-    return posts
+# @router.get("/" , response_model=List[schemas.Post])
+# def get_posts_by_get_param(db: Session = Depends(get_db) , current_user : int = Depends(oauth2.get_current_user)):
+#     posts = db.query(models.Post).filter(models.Post.owner_id == current_user.id).all()
+#     return posts
     
               
 
