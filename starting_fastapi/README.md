@@ -280,3 +280,17 @@ managed properly to prevent unauthorized access.
 
 how  any coloumn is conneted to any table.
 
+#### Query Parameters
+- Query parameters are a way to pass additional data from the client to the server as part of the URL
+- They are used to filter, sort, or paginate data, or to specify additional options for the
+request.
+- Query parameters are appended to the URL using a question mark (?) and are separated by
+ampersands (&).
+- Query parameters are not part of the URL's path, but rather are appended to the URL's
+query string.
+- Query parameters are usually used for filtering, sorting, or paginating data, or for
+specifying additional options for the request.
+
+https://www.youtube.com/watch?v=0sOvCWFmrtA
+
+Here `?v=0sOvCWFmrtA` is the query parameter.
