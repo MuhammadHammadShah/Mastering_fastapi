@@ -179,3 +179,19 @@
 #    if updated_post == None:
 #        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"post with id: {id} not found")
 #    return {"data" : updated_post}
+
+
+
+
+# to use raw sql we use a software psycopg and here how we connect to it
+
+# while True:
+#     try:
+#         conn = psycopg2.connect(host='localhost' , database='fastapi_db' , user='postgres' , password='POSTGRESforPIAIC.6/11/2024' , cursor_factory=RealDictCursor)
+#         cursor = conn.cursor()
+#         print("Database Connection was Successfull! ")
+#         break
+#     except Exception as error:
+#         print("Connection to database failed")
+#         print("Error: " , error)
+#         time.sleep(4)
