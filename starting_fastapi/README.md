@@ -337,3 +337,7 @@ uniquely identify a row, such as a combination of a primary key and a foreign ke
 ```
 - The vote_id is a boolean value, 0 for downvote and 1 for upvote.
 - A vote direction of 1 means we want to add a vote, a direction of 0 means we want to delete a vote.
+
+
+#### JOINT 
+- To get information from two different tables at the same time (e.g: posts , users ) , we use `Joint`.

@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr  , field_validator
+from pydantic.types import conint
 
 
 
@@ -56,3 +57,18 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     #id : Optional[str] = None
     id : int
+
+
+class Vote(BaseModel):
+    post_id : int
+    dir: int
+
+    @field_validator('dir')
+    @classmethod
+    def validate_dir(cls, v):
+        if v not in [0, 1]:
+            raise ValueError("Vote direction must be either 1 (upvote) or 0 (down vote)")
+        return v
+
+
+
