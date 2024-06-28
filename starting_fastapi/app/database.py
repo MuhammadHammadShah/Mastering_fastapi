@@ -1,11 +1,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+# from .config import settings
 # import psycopg2
 # from psycopg2.extras import RealDictCursor
 # import time
 
-SQL_DATABASE_URL = 'postgresql://postgres:POSTGRESforPIAIC.6/11/2024@localhost/fastapi_db'
+SQL_DATABASE_URL = f'postgresql://postgres:POSTGRESforPIAIC.6/11/2024@localhost:5432/fastapi_db'
 
 engine = create_engine(SQL_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit= False , autoflush= False , bind=engine)

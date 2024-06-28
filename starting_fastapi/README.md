@@ -294,3 +294,46 @@ specifying additional options for the request.
 https://www.youtube.com/watch?v=0sOvCWFmrtA
 
 Here `?v=0sOvCWFmrtA` is the query parameter.
+
+
+### VOTE / LIKE SYSTEM REQUIREMENTS:
+- User can like a post.
+- User can unlike a post.
+- - User should only be able to a like a post once.
+- - Retrieving posts should also fetch the total number of likes.
+
+
+#### VOTE MODEL
+- Coloumn referencing post id
+- Coloumn referencing user id who liked the post 
+- A user should only be able to like the post once, so we need to ensure every post_id/vote_id is a unique combination.
+
+![vote model](https://miro.medium.com/v2/resize:fit:1400/1*pS27XG-PSkjqMcbY58dznA.png)
+
+
+## `COMPOSITE KEYS` 
+- A composite key is a key that consists of two or more columns in a table. It is
+used to uniquely identify each row in the table.
+- Composite keys are often used when a table has multiple columns that can be used to
+uniquely identify a row, such as a combination of a primary key and a foreign key.
+- Composite keys are also known as compound keys or composite primary keys.
+- Primary key that spans multiple coloumns.
+- Since Primary keys must be unique, this will ensure noo user can like a post **twice**
+
+![composote keys](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxQnYd0RDocNVGl2eoPZ4XqcZTBvfSdWLEFQ&s)
+
+![primary key on multiple coloumns](https://media.licdn.com/dms/image/D4D12AQFznNqaTwzbug/article-cover_image-shrink_720_1280/0/1680984546625?e=2147483647&v=beta&t=wvY7i-7jF-Vp2wVS_3BUsKEdpxkv38OV5aOiuJasTDo)
+
+
+###### VOTE ROUTE
+- Path will be at `/vote`.
+- The user id will be extracted from `JWT token`.
+- The body will contain the id of the post the user is voting on , as well as the direction of the post
+```
+{
+    post_id : 1432
+    vote_id : 0
+}
+```
+- The vote_id is a boolean value, 0 for downvote and 1 for upvote.
+- A vote direction of 1 means we want to add a vote, a direction of 0 means we want to delete a vote.
