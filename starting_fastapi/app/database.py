@@ -1,3 +1,6 @@
+from datetime import time
+import psycopg2 
+from psycopg2.extras import RealDictCursor
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -6,7 +9,7 @@ from sqlalchemy.orm import sessionmaker
 # from psycopg2.extras import RealDictCursor
 # import time
 
-SQL_DATABASE_URL = f'postgresql://postgres:POSTGRESforPIAIC.6/11/2024@localhost:5432/fastapi_db'
+SQL_DATABASE_URL = 'postgresql://postgres:POSTGRESforPIAIC.6/11/2024@localhost:5432/fastapi_db'
 
 engine = create_engine(SQL_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit= False , autoflush= False , bind=engine)
@@ -21,13 +24,13 @@ def get_db():
     finally:
         db.close()
 
-# while True:
-#     try:
-#         conn = psycopg2.connect(host='localhost' , database='fastapi_db' , user='postgres' , password='POSTGRESforPIAIC.6/11/2024' , cursor_factory=RealDictCursor)
-#         cursor = conn.cursor()
-#         print("Database Connection was Successfull! ")
-#         break
-#     except Exception as error:
-#         print("Connection to database failed")
-#         print("Error: " , error)
-#         time.sleep(4)
+while True:
+    try:
+        conn = psycopg2.connect(host='localhost' , database='fastapi_db' , user='postgres' , password='POSTGRESforPIAIC.6/11/2024' , cursor_factory=RealDictCursor)
+        cursor = conn.cursor()
+        print("Database Connection was Successfull! ")
+        break
+    except Exception as error:
+        print("Connection to database failed")
+        print("Error: " , error)
+        time.sleep(4)
