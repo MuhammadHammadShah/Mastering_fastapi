@@ -31,9 +31,18 @@ class Post(PostBase): # Response
     # content : str       ## these are inherated from PostBase.
     # published : bool   
     owner : UserOut
+
+
     class Config:
     #    orm_mode = True  # a warning was coming in terminal so i changed it >>> the warning
                          # >>>>> site-packages\pydantic\_internal\_config.py:334: UserWarning: Valid config keys have changed in V2:* 'orm_mode' has been renamed to 'from_attributes'warnings.warn(message, UserWarning)
+        from_attributes = True
+
+# Class for votes
+class PostOut(PostBase): # response   
+    post : Post
+    votes : int
+    class Config:
         from_attributes = True
 
 # Class for Users:

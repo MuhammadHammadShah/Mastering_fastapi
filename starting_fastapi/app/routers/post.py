@@ -1,5 +1,6 @@
 from typing import List, Optional
 from fastapi import APIRouter, Response , status , HTTPException , Depends
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from .. import  models , schemas , oauth2
 from ..database import  get_db
@@ -14,11 +15,24 @@ router = APIRouter(
 
 # to allow owner how many posts he want to retrieve
 
-@router.get("/" , response_model=List[schemas.Post])
+@router.get("/" , response_model=List[schemas.PostOut])
 def get_posts_by_get_param(db: Session = Depends(get_db) , current_user : int = Depends(oauth2.get_current_user) , limit : int = 10 , skip : int = 0 , search : Optional[str] = ""):
     # print(limit)  # here in limit sqlalchemy retrieve first ten posts.
-    posts = db.query(models.Post).filter(models.Post.title.contains(search)).limit(limit).offset(skip).all() # the .offset() is used as skip option # here .filter(.contains) do a search and retrieve data (posts) according to it
-    return posts
+    # posts = db.query(models.Post).filter(models.Post.title.contains(search)).limit(limit).offset(skip).all() # the .offset() is used as skip option # here .filter(.contains) do a search and retrieve data (posts) according to it
+    result = db.query(
+        models.Post,
+        func.count(models.Vote.post_id).label("vote_count")  # Use a clearer label
+    ).join(
+        models.Vote,
+        models.Vote.post_id == models.Post.id,
+        isouter=True
+    ).group_by(
+        models.Post.id
+    ).filter(
+        models.Post.title.ilike("%" + search + "%")  # Case-insensitive search (example)
+    ).limit(limit).offset(skip).all()    # print(result)
+    return result
+
 
 
 
@@ -54,11 +68,21 @@ def create_posts(new_post : schemas.PostCreate , db: Session = Depends(get_db) ,
 
 # Get a single post with id
 
-@router.get("/{id}" , response_model=schemas.Post ) 
+@router.get("/{id}" , response_model=schemas.PostOut ) 
 def get_a_single_post(id : int , response : Response , db: Session = Depends(get_db) , current_user : int = Depends(oauth2.get_current_user)) :
 #    cursor.execute("""SELECT * FROM posts WHERE id = %s""" , (str(id),))
 #    specific_post_id = cursor.fetchone()
-    post = db.query(models.Post).filter(models.Post.id == id).first()
+    # post = db.query(models.Post).filter(models.Post.id == id).first()
+    post = db.query(
+        models.Post,
+        func.count(models.Vote.post_id).label("vote_count")  # Use a clearer label
+    ).join(
+        models.Vote,
+        models.Vote.post_id == models.Post.id,
+        isouter=True
+    ).group_by(
+        models.Post.id
+    ).filter(models.Post.id == id).first()
     #print(specific_post_id)
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail=f"post with id: {id} not found")

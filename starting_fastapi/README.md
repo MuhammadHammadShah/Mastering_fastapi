@@ -341,3 +341,11 @@ uniquely identify a row, such as a combination of a primary key and a foreign ke
 
 #### JOINT 
 - To get information from two different tables at the same time (e.g: posts , users ) , we use `Joint`.
+
+### `ALEMBIC`
+
+- A database migration tool.
+- Developers can track changes to code and rollback code easily with `GIT`. Why can't we do the same for database models/models.
+- Database migrations allow us to incrementally track changes to database schema and rollback changes to any point in time.
+- We will use a tool called `Alembic` to make changes to our database.
+- Alembic can also automatically pull database models from sqlalchemy and generate the proper tables
