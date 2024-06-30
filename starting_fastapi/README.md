@@ -1,3 +1,7 @@
+## Install Packages
+- To install packages just paste it in console:
+- `pip install -r requirements.txt`
+
 # Why We Need Schema:
 - Its a pain to get all the values from body.
 - The client can send whatever data they want.
@@ -349,3 +353,22 @@ uniquely identify a row, such as a combination of a primary key and a foreign ke
 - Database migrations allow us to incrementally track changes to database schema and rollback changes to any point in time.
 - We will use a tool called `Alembic` to make changes to our database.
 - Alembic can also automatically pull database models from sqlalchemy and generate the proper tables
+
+### `CORS`
+- Cross Origin Resource Sharing (CORS) allows you to make requests from a web on one domain to a server on a different domain.
+- By default our API will only allow web browsers running on the same domain as our server to requests to it. 
+![CORS](https://media.geeksforgeeks.org/wp-content/cdn-uploads/20220207115557/Group-2-5.jpg)
+
+
+# `Heroku`
+- Heroku is a cloud platform as a service (PaaS) that enables developers to build,
+run, and operate applications entirely in the cloud.
+- Heroku is a cloud platform that lets companies build, deliver, monitor and scale
+applications, both on a global scale and in a matter of minutes, with maximum
+reliability and minimal management and maintenance overhead.
+## Commands for heroku
+- `heroku login` : login to heroku
+- `heroku create` : create a new app on heroku
+- `heroku git:remote -a <app name>` : add heroku remote to git
+- `git push heroku main` : push code to heroku
+
